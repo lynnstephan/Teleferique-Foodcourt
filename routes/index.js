@@ -42,6 +42,13 @@ router.post("/menu", function (req, res, next) {
   });
 });
 
+router.get("/:id", function (req, res, next) {
+   Product.findById(req.params.id, (err, data) => {
+      if (err) res.send({ success: false, message: "An error occurred" });
+      res.send({ success: true, data: data });
+    });
+});
+
 router.post("/category", function (req, res, next) {
   var category = new Category({
     name: req.body.name,
