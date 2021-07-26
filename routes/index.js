@@ -22,6 +22,13 @@ router.put("/menu/:id", function (req, res, next) {
     });
 });
 
+router.delete("/menu/:id", function (req, res, next) {
+   Product.findOneAndDelete({_id:req.params.id}, (err, data) => {
+      if (err) res.send({ success: false, message: "An error occurred" });
+      res.send({ success: true, data: data });
+    });
+});
+
 
 router.get("/menu", function (req, res, next) {
   Category.find({}, (err, categories) => {
