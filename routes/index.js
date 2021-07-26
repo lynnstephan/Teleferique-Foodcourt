@@ -1,11 +1,33 @@
 var express = require("express");
 const Product = require("../models/product");
 const Category = require("../models/category");
+const auth = require("../middlewares/auth");
 var router = express.Router();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Teleferique Food Court Backend" });
+});
+
+router.get("/menu/:id", auth(), function (req, res, next) {
+  Product.findById(req.params.id, (err, data) => {
+    if (err) res.send({ success: false, message: "An error occurred" });
+    res.send({ success: true, data: data });
+  });
+});
+
+router.put("/menu/:id", auth(), function (req, res, next) {
+  Product.findOneAndUpdate({ _id: req.params.id }, req.body, (err, data) => {
+    if (err) res.send({ success: false, message: "An error occurred" });
+    res.send({ success: true, data: data });
+  });
+});
+
+router.delete("/menu/:id", auth(), function (req, res, next) {
+  Product.findOneAndDelete({ _id: req.params.id }, (err, data) => {
+    if (err) res.send({ success: false, message: "An error occurred" });
+    res.send({ success: true, data: data });
+  });
 });
 
 router.get("/menu", function (req, res, next) {
@@ -19,7 +41,7 @@ router.get("/menu", function (req, res, next) {
   });
 });
 
-router.post("/menu", function (req, res, next) {
+router.post("/menu", auth(), function (req, res, next) {
   var product = new Product({
     title_AR: req.body.title_AR,
     title_EN: req.body.title_EN,
@@ -42,14 +64,7 @@ router.post("/menu", function (req, res, next) {
   });
 });
 
-router.get("/:id", function (req, res, next) {
-   Product.findById(req.params.id, (err, data) => {
-      if (err) res.send({ success: false, message: "An error occurred" });
-      res.send({ success: true, data: data });
-    });
-});
-
-router.post("/category", function (req, res, next) {
+router.post("/category", auth(), function (req, res, next) {
   var category = new Category({
     name: req.body.name,
   });
@@ -68,7 +83,7 @@ router.post("/category", function (req, res, next) {
   });
 });
 
-router.delete("/category", function (req, res, next) {
+router.delete("/category", auth(), function (req, res, next) {
   Category.findByIdAndDelete(req.body.cid, (err, data) => {
     if (err) res.send({ success: false, message: "An error occurred" });
     res.send({ success: true, data: data });
