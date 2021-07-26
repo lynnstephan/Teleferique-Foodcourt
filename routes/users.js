@@ -4,7 +4,7 @@ var Users = require("../models/users");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-router.post("/login", function (req, res, next) {
+router.post("/register", function (req, res, next) {
   var user = new Users({
     name: req.body.name,
     email: req.body.email,
@@ -31,7 +31,7 @@ router.post("/login", function (req, res, next) {
     });
 });
 
-router.post("/register", function (req, res, next) {
+router.post("/login", function (req, res, next) {
   Users.findOne({
     email: req.body.email,
   }).then(function (user, err) {
