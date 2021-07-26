@@ -15,6 +15,14 @@ router.get("/menu/:id", function (req, res, next) {
     });
 });
 
+router.put("/menu/:id", function (req, res, next) {
+   Product.findOneAndUpdate({_id:req.params.id},req.body, (err, data) => {
+      if (err) res.send({ success: false, message: "An error occurred" });
+      res.send({ success: true, data: data });
+    });
+});
+
+
 router.get("/menu", function (req, res, next) {
   Category.find({}, (err, categories) => {
     if (err) res.send({ success: false, message: "An error occurred" });
